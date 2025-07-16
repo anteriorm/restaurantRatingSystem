@@ -1,6 +1,7 @@
 package com.myrating.restaurantRatingSystem.repositories;
 
 import com.myrating.restaurantRatingSystem.entities.Rating;
+import com.myrating.restaurantRatingSystem.entities.Users;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -22,12 +23,11 @@ public class RatingRepository {
         return new ArrayList<>(ratings);
     }
 
-    public Rating findById(Long id) {
-        for (Rating rating : ratings) {
-            if (rating.getIdUser().equals(id)) {
-                return rating;
-            }
-        }
-        return null;
+
+    public Rating findById(Long idUser, Long idRestaurant) {
+        return ratings.stream()
+                .filter(u -> u.getIdUser().equals(idUser) && u.getIdRestaurant().equals(idRestaurant))
+                .findFirst()
+                .orElse(null);
     }
 }

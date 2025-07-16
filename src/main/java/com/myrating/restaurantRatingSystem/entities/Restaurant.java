@@ -1,6 +1,10 @@
 package com.myrating.restaurantRatingSystem.entities;
 
+import com.myrating.restaurantRatingSystem.enums.TypeKitchen;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.*;
+import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -12,6 +16,8 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Restaurant {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;

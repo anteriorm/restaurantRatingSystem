@@ -1,5 +1,7 @@
 package com.myrating.restaurantRatingSystem.services;
 
+import com.myrating.restaurantRatingSystem.dto.ReviewRequestDTO;
+import com.myrating.restaurantRatingSystem.dto.ReviewResponseDTO;
 import com.myrating.restaurantRatingSystem.entities.Rating;
 import com.myrating.restaurantRatingSystem.entities.Restaurant;
 import com.myrating.restaurantRatingSystem.repositories.RatingRepository;
@@ -18,18 +20,37 @@ public class RatingService {
 
     private final RestaurantRepository restaurantRepository;
 
-    public void save(Rating rating) {
+    public void save(ReviewRequestDTO dto) {
+        Rating rating = new Rating();
+        rating.setIdUser(dto.idUser());
+        rating.setIdRestaurant(dto.idRestaurant());
+        rating.setRating(dto.rating());
+        rating.setFeedback(dto.feedback());
         ratingRepository.save(rating);
         recalculateRestaurantRating(rating.getIdRestaurant());
     }
 
-    public void remove(Rating rating) {
-        ratingRepository.remove(rating);
-        recalculateRestaurantRating(rating.getIdRestaurant());
+    public void remove(Long idUser, Long idRestaurant) {
+        Rating rating = ratingRepository.findById(idUser, idRestaurant);
+        if (rating != null) {
+            ratingRepository.remove(rating);
+            recalculateRestaurantRating(rating.getIdRestaurant());
+        }
     }
 
-    public List<Rating> findAll() {
-        return ratingRepository.findAll();
+    public Rating findById(Long idUser, Long idRestaurant) {
+        return ratingRepository.findById(idUser, idRestaurant);
+    }
+
+    public List<ReviewResponseDTO> findAll() {
+        return ratingRepository.findAll().stream()
+                .map(r -> new ReviewResponseDTO(
+                        r.getIdUser(),
+                        r.getIdRestaurant(),
+                        r.getRating(),
+                        r.getFeedback()
+                ))
+                .toList();
     }
 
     private void recalculateRestaurantRating(Long restaurantId) {

@@ -1,5 +1,7 @@
 package com.myrating.restaurantRatingSystem.services;
 
+import com.myrating.restaurantRatingSystem.dto.RestaurantRequestDTO;
+import com.myrating.restaurantRatingSystem.dto.RestaurantResponseDTO;
 import com.myrating.restaurantRatingSystem.entities.Restaurant;
 import com.myrating.restaurantRatingSystem.repositories.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,15 +14,31 @@ import java.util.List;
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
 
-    public void save(Restaurant restaurant){
+    public void save(RestaurantRequestDTO dto){
+        Restaurant restaurant = new Restaurant();
+        restaurant.setName(dto.name());
+        restaurant.setDescription(dto.description());
+        restaurant.setTypeKitchen(dto.typeKitchen());
+        restaurant.setMidCheck(dto.midCheck());
         restaurantRepository.save(restaurant);
     }
 
-    public void remove(Restaurant restaurant){
-        restaurantRepository.remove(restaurant);
+    public void remove(Long id){
+        Restaurant restaurant = restaurantRepository.findById(id);
+        if (restaurant != null) {
+            restaurantRepository.remove(restaurant);
+        }
     }
 
-    public List<Restaurant> findAll() {
-        return restaurantRepository.findAll();
+    public List<RestaurantResponseDTO> findAll() {
+        return restaurantRepository.findAll().stream()
+                .map(restaurant -> new RestaurantResponseDTO(
+                        restaurant.getId(),
+                        restaurant.getName(),
+                        restaurant.getDescription(),
+                        restaurant.getTypeKitchen(),
+                        restaurant.getMidCheck(),
+                        restaurant.getRating()))
+                .toList();
     }
 }

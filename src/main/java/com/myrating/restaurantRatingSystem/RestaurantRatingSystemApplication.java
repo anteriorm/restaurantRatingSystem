@@ -17,12 +17,7 @@ public class RestaurantRatingSystemApplication {
 		UserService userService = context.getBean(UserService.class);
 		System.out.println();
 		Users user2 = new Users(2L,"Паша",20,"Мужской");
-		userService.remove(user2);
-		List<Users> users = userService.findAll();
 		System.out.println("Пользователи:");
-		for (Users user : users) {
-			System.out.println(user);
-		}
 	}
 
 }

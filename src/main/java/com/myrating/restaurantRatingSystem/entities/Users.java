@@ -2,6 +2,7 @@ package com.myrating.restaurantRatingSystem.entities;
 
 import lombok.*;
 
+
 import java.util.Objects;
 
 @Getter

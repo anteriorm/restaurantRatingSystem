@@ -1,4 +1,4 @@
-package com.myrating.restaurantRatingSystem.entities;
+package com.myrating.restaurantRatingSystem.enums;
 
 public enum TypeKitchen {
     EUROPEAN,
