@@ -5,6 +5,7 @@ import com.myrating.restaurantRatingSystem.dto.RestaurantResponseDTO;
 import com.myrating.restaurantRatingSystem.dto.UserRequestDTO;
 import com.myrating.restaurantRatingSystem.dto.UserResponseDTO;
 import com.myrating.restaurantRatingSystem.services.RestaurantService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class RestaurantController {
     }
 
     @PostMapping
-    public void addRestaurant(@RequestBody RestaurantRequestDTO restaurantRequestDTO){
+    public void addRestaurant(@Valid @RequestBody RestaurantRequestDTO restaurantRequestDTO){
         restaurantService.save(restaurantRequestDTO);
     }
 

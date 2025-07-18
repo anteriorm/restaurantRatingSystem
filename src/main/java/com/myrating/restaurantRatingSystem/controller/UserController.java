@@ -3,6 +3,7 @@ package com.myrating.restaurantRatingSystem.controller;
 import com.myrating.restaurantRatingSystem.dto.UserRequestDTO;
 import com.myrating.restaurantRatingSystem.dto.UserResponseDTO;
 import com.myrating.restaurantRatingSystem.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public void addUser(@RequestBody UserRequestDTO userRequestDTO){
+    public void addUser(@Valid @RequestBody UserRequestDTO userRequestDTO){
         userService.save(userRequestDTO);
     }
 

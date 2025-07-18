@@ -4,6 +4,7 @@ import com.myrating.restaurantRatingSystem.dto.ReviewRequestDTO;
 import com.myrating.restaurantRatingSystem.dto.ReviewResponseDTO;
 import com.myrating.restaurantRatingSystem.entities.Rating;
 import com.myrating.restaurantRatingSystem.entities.Restaurant;
+import com.myrating.restaurantRatingSystem.mappers.ReviewMapper;
 import com.myrating.restaurantRatingSystem.repositories.RatingRepository;
 import com.myrating.restaurantRatingSystem.repositories.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RatingService {
     private final RatingRepository ratingRepository;
+    private final ReviewMapper reviewMapper;
 
     private final RestaurantRepository restaurantRepository;
 
     public void save(ReviewRequestDTO dto) {
-        Rating rating = new Rating();
-        rating.setIdUser(dto.idUser());
-        rating.setIdRestaurant(dto.idRestaurant());
-        rating.setRating(dto.rating());
-        rating.setFeedback(dto.feedback());
+        Rating rating = reviewMapper.toEntity(dto);
         ratingRepository.save(rating);
         recalculateRestaurantRating(rating.getIdRestaurant());
     }
@@ -44,12 +42,7 @@ public class RatingService {
 
     public List<ReviewResponseDTO> findAll() {
         return ratingRepository.findAll().stream()
-                .map(r -> new ReviewResponseDTO(
-                        r.getIdUser(),
-                        r.getIdRestaurant(),
-                        r.getRating(),
-                        r.getFeedback()
-                ))
+                .map(reviewMapper::toDto)
                 .toList();
     }
 

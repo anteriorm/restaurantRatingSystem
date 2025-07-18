@@ -4,6 +4,7 @@ import com.myrating.restaurantRatingSystem.dto.ReviewRequestDTO;
 import com.myrating.restaurantRatingSystem.dto.ReviewResponseDTO;
 import com.myrating.restaurantRatingSystem.entities.Rating;
 import com.myrating.restaurantRatingSystem.services.RatingService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public void addRating(@RequestBody ReviewRequestDTO dto) {
+    public void addRating(@Valid @RequestBody ReviewRequestDTO dto) {
         ratingService.save(dto);
     }
 

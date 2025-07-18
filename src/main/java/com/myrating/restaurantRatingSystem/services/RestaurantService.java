@@ -3,6 +3,7 @@ package com.myrating.restaurantRatingSystem.services;
 import com.myrating.restaurantRatingSystem.dto.RestaurantRequestDTO;
 import com.myrating.restaurantRatingSystem.dto.RestaurantResponseDTO;
 import com.myrating.restaurantRatingSystem.entities.Restaurant;
+import com.myrating.restaurantRatingSystem.mappers.RestaurantMapper;
 import com.myrating.restaurantRatingSystem.repositories.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,14 +13,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class RestaurantService {
+    private final RestaurantMapper restaurantMapper;
     private final RestaurantRepository restaurantRepository;
 
     public void save(RestaurantRequestDTO dto){
-        Restaurant restaurant = new Restaurant();
-        restaurant.setName(dto.name());
-        restaurant.setDescription(dto.description());
-        restaurant.setTypeKitchen(dto.typeKitchen());
-        restaurant.setMidCheck(dto.midCheck());
+        Restaurant restaurant = restaurantMapper.toEntity(dto);
         restaurantRepository.save(restaurant);
     }
 
@@ -32,13 +30,7 @@ public class RestaurantService {
 
     public List<RestaurantResponseDTO> findAll() {
         return restaurantRepository.findAll().stream()
-                .map(restaurant -> new RestaurantResponseDTO(
-                        restaurant.getId(),
-                        restaurant.getName(),
-                        restaurant.getDescription(),
-                        restaurant.getTypeKitchen(),
-                        restaurant.getMidCheck(),
-                        restaurant.getRating()))
+                .map(restaurantMapper::toDto)
                 .toList();
     }
 }
