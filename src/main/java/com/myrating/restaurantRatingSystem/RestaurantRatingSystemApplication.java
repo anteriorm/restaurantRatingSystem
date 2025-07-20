@@ -1,15 +1,15 @@
 package com.myrating.restaurantRatingSystem;
 
-import com.myrating.restaurantRatingSystem.entities.Rating;
 import com.myrating.restaurantRatingSystem.entities.Users;
 import com.myrating.restaurantRatingSystem.services.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import java.util.List;
 
 @SpringBootApplication
+@EnableJpaRepositories("com.myrating.restaurantRatingSystem.repositories")
 public class RestaurantRatingSystemApplication {
 
 	public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package com.myrating.restaurantRatingSystem.entities;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 
@@ -10,8 +11,11 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Users {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private int age;

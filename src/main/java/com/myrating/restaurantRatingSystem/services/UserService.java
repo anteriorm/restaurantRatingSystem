@@ -2,7 +2,6 @@ package com.myrating.restaurantRatingSystem.services;
 
 import com.myrating.restaurantRatingSystem.dto.UserRequestDTO;
 import com.myrating.restaurantRatingSystem.dto.UserResponseDTO;
-import com.myrating.restaurantRatingSystem.entities.Restaurant;
 import com.myrating.restaurantRatingSystem.entities.Users;
 import com.myrating.restaurantRatingSystem.mappers.UserMapper;
 import com.myrating.restaurantRatingSystem.repositories.UserRepository;
@@ -23,10 +22,7 @@ public class UserService {
     }
 
     public void remove(Long id){
-        Users users = userRepository.findById(id);
-        if (users != null) {
-            userRepository.remove(users);
-        }
+        userRepository.deleteById(id);
     }
 
     public List<UserResponseDTO> findAll() {

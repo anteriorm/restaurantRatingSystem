@@ -24,9 +24,9 @@ public class ReviewController {
         return ratingService.findAll();
     }
 
-    @GetMapping("/{idUser}/{idRestaurant}")
-    public Rating getByIdRatings(@PathVariable Long idUser, @PathVariable Long idRestaurant){
-        return ratingService.findById(idUser, idRestaurant);
+    @GetMapping("/{userId}/{restaurantId}")
+    public ReviewResponseDTO getByIdRatings(@PathVariable Long userId, @PathVariable Long restaurantId){
+        return ratingService.findById(userId, restaurantId);
     }
 
     @PostMapping
@@ -34,8 +34,8 @@ public class ReviewController {
         ratingService.save(dto);
     }
 
-    @DeleteMapping("/{idUser}/{idRestaurant}")
-    public void removeRating(@PathVariable Long idUser,@PathVariable Long idRestaurant) {
-        ratingService.remove(idUser, idRestaurant);
+    @DeleteMapping("/{userId}/{restaurantId}")
+    public void removeRating(@PathVariable Long userId, @PathVariable Long restaurantId) {
+        ratingService.remove(userId, restaurantId);
     }
 }

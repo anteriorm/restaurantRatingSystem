@@ -1,8 +1,7 @@
 package com.myrating.restaurantRatingSystem.entities;
 
+import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Objects;
 
 
 @Getter
@@ -10,22 +9,20 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Rating {
 
-    private Long idUser;
-    private Long idRestaurant;
+    @EmbeddedId
+    private RatingId id;
+
+    @ManyToOne
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
+    private Users user;
+    @ManyToOne
+    @MapsId("restaurantId")
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
     private int rating;
     private String feedback;
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Rating rating = (Rating) o;
-        return Objects.equals(idUser, rating.idUser);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(idUser);
-    }
 }

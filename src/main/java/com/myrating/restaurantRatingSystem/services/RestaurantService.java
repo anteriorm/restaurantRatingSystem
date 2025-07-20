@@ -22,10 +22,7 @@ public class RestaurantService {
     }
 
     public void remove(Long id){
-        Restaurant restaurant = restaurantRepository.findById(id);
-        if (restaurant != null) {
-            restaurantRepository.remove(restaurant);
-        }
+        restaurantRepository.deleteById(id);
     }
 
     public List<RestaurantResponseDTO> findAll() {
