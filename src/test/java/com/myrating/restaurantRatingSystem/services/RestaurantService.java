@@ -44,6 +44,7 @@ class RestaurantServiceTest {
     @Test
     void testRemove() {
         Long id = 1L;
+        when(restaurantRepository.existsById(id)).thenReturn(true);
         restaurantService.remove(id);
         verify(restaurantRepository).deleteById(id);
     }

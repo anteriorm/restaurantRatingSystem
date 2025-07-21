@@ -6,6 +6,8 @@ import com.myrating.restaurantRatingSystem.entities.Rating;
 import com.myrating.restaurantRatingSystem.entities.RatingId;
 import com.myrating.restaurantRatingSystem.entities.Restaurant;
 import com.myrating.restaurantRatingSystem.entities.Users;
+import com.myrating.restaurantRatingSystem.exception.BadRequestException;
+import com.myrating.restaurantRatingSystem.exception.ResourceNotFoundException;
 import com.myrating.restaurantRatingSystem.mappers.ReviewMapper;
 import com.myrating.restaurantRatingSystem.repositories.RatingRepository;
 import com.myrating.restaurantRatingSystem.repositories.RestaurantRepository;
@@ -32,9 +34,12 @@ public class RatingService {
 
     public void save(ReviewRequestDTO dto) {
         Users user = userRepository.findById(dto.idUser())
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + dto.idUser()));
+                .orElseThrow(() -> new ResourceNotFoundException("Пользователь не найден: " + dto.idUser()));
         Restaurant restaurant = restaurantRepository.findById(dto.idRestaurant())
-                .orElseThrow(() -> new IllegalArgumentException("Restaurant not found: " + dto.idRestaurant()));
+                .orElseThrow(() -> new ResourceNotFoundException("Ресторан не найден: " + dto.idRestaurant()));
+        if (ratingRepository.existsById(new RatingId(user.getId(), restaurant.getId()))) {
+            throw new BadRequestException("Пользователь уже оставил отзыв об этом ресторане");
+        }
         Rating rating = reviewMapper.toEntity(dto);
         rating.setUser(user);
         rating.setRestaurant(restaurant);
@@ -51,6 +56,8 @@ public class RatingService {
             Long restId = rating.getRestaurant().getId();
             ratingRepository.deleteById(ratingId);
             recalculateRestaurantRating(restId);
+        } else {
+            throw new ResourceNotFoundException("Отзыв пользователя не найден " + userId + " и ресторан " + restaurantId);
         }
     }
 
@@ -63,7 +70,7 @@ public class RatingService {
     public ReviewResponseDTO findById(Long userId, Long restaurantId) {
         RatingId ratingId = new RatingId(userId, restaurantId);
         Rating rating = ratingRepository.findById(ratingId)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Отзыв не найден для пользователя " + userId + " и ресторана " + restaurantId));
         return reviewMapper.toDto(rating);
     }

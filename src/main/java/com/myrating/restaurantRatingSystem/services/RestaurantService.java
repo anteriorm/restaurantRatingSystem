@@ -3,6 +3,7 @@ package com.myrating.restaurantRatingSystem.services;
 import com.myrating.restaurantRatingSystem.dto.RestaurantRequestDTO;
 import com.myrating.restaurantRatingSystem.dto.RestaurantResponseDTO;
 import com.myrating.restaurantRatingSystem.entities.Restaurant;
+import com.myrating.restaurantRatingSystem.exception.ResourceNotFoundException;
 import com.myrating.restaurantRatingSystem.mappers.RestaurantMapper;
 import com.myrating.restaurantRatingSystem.repositories.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,9 @@ public class RestaurantService {
     }
 
     public void remove(Long id){
+        if (!restaurantRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Ресторан не найден: " + id);
+        }
         restaurantRepository.deleteById(id);
     }
 

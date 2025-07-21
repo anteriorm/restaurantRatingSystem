@@ -21,6 +21,7 @@ public class Restaurant {
     private String name;
     private String description;
     @Enumerated(EnumType.STRING)
+    @Column(name = "type_kitchen")
     private TypeKitchen typeKitchen;
     private int midCheck;
     private BigDecimal rating;

@@ -43,6 +43,7 @@ class UserServiceTest {
     @Test
     void testRemove() {
         Long id = 1L;
+        when(userRepository.existsById(id)).thenReturn(true);
         userService.remove(id);
         verify(userRepository).deleteById(id);
     }

@@ -3,6 +3,7 @@ package com.myrating.restaurantRatingSystem.services;
 import com.myrating.restaurantRatingSystem.dto.UserRequestDTO;
 import com.myrating.restaurantRatingSystem.dto.UserResponseDTO;
 import com.myrating.restaurantRatingSystem.entities.Users;
+import com.myrating.restaurantRatingSystem.exception.ResourceNotFoundException;
 import com.myrating.restaurantRatingSystem.mappers.UserMapper;
 import com.myrating.restaurantRatingSystem.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,9 @@ public class UserService {
     }
 
     public void remove(Long id){
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Пользователь не найден: " + id);
+        }
         userRepository.deleteById(id);
     }
 
