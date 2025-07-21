@@ -2,7 +2,9 @@ package com.myrating.restaurantRatingSystem.controller;
 
 import com.myrating.restaurantRatingSystem.dto.ReviewRequestDTO;
 import com.myrating.restaurantRatingSystem.dto.ReviewResponseDTO;
-import com.myrating.restaurantRatingSystem.entities.Rating;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import com.myrating.restaurantRatingSystem.services.RatingService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +39,15 @@ public class ReviewController {
     @DeleteMapping("/{userId}/{restaurantId}")
     public void removeRating(@PathVariable Long userId, @PathVariable Long restaurantId) {
         ratingService.remove(userId, restaurantId);
+    }
+
+    @GetMapping("/paged")
+    public Page<ReviewResponseDTO> getPaged(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam(defaultValue = "rating") String sortBy,
+            @RequestParam(defaultValue = "false") boolean asc
+    ) {
+        return ratingService.findAllPaged(page, size, sortBy, asc);
     }
 }

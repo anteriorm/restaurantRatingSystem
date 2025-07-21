@@ -12,6 +12,10 @@ import com.myrating.restaurantRatingSystem.repositories.RestaurantRepository;
 import com.myrating.restaurantRatingSystem.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -48,6 +52,12 @@ public class RatingService {
             ratingRepository.deleteById(ratingId);
             recalculateRestaurantRating(restId);
         }
+    }
+
+    public Page<ReviewResponseDTO> findAllPaged(int page, int size, String sortBy, boolean asc) {
+        Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return ratingRepository.findAll(pageable).map(reviewMapper::toDto);
     }
 
     public ReviewResponseDTO findById(Long userId, Long restaurantId) {

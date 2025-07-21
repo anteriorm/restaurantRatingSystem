@@ -8,6 +8,7 @@ import com.myrating.restaurantRatingSystem.services.RestaurantService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -18,6 +19,16 @@ public class RestaurantController {
 
     public RestaurantController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
+    }
+
+    @GetMapping("/min-rating")
+    public List<RestaurantResponseDTO> getByMinRating(@RequestParam BigDecimal minRating) {
+        return restaurantService.findByMinRating(minRating);
+    }
+
+    @GetMapping("/min-rating-query")
+    public List<RestaurantResponseDTO> getByMinRatingQuery(@RequestParam BigDecimal minRating) {
+        return restaurantService.findByMinRatingQuery(minRating);
     }
 
     @GetMapping

@@ -8,6 +8,7 @@ import com.myrating.restaurantRatingSystem.repositories.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -27,6 +28,19 @@ public class RestaurantService {
 
     public List<RestaurantResponseDTO> findAll() {
         return restaurantRepository.findAll().stream()
+                .map(restaurantMapper::toDto)
+                .toList();
+    }
+    public List<RestaurantResponseDTO> findByMinRating(BigDecimal minRating) {
+        return restaurantRepository.findByRatingGreaterThanEqual(minRating)
+                .stream()
+                .map(restaurantMapper::toDto)
+                .toList();
+    }
+
+    public List<RestaurantResponseDTO> findByMinRatingQuery(BigDecimal minRating) {
+        return restaurantRepository.findRestaurantsWithMinRating(minRating)
+                .stream()
                 .map(restaurantMapper::toDto)
                 .toList();
     }
